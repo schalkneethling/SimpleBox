@@ -1,7 +1,6 @@
 /*
  * Copyright Schalk Neethling(ossreleasefeed) 2011
  * All code released under a MIT License (http://www.opensource.org/licenses/mit-license.php)
- * Some basic audio and audio format checking borrowed from Modernizr (https://github.com/Modernizr)
  */
 (function($) {
 	$.fn.simplebox = function(options) {
