@@ -5,7 +5,6 @@
 (function($) {
 	$.fn.simplebox = function(options) {
 		var wrapper = document.createElement("div"), 
-		anchor = document.createElement("a"),
 		currentForm = $(this), 
 		windowWidth = $(document).width(), 
 		windowHeight = $(document).height(), 
@@ -64,6 +63,7 @@
 		}
 		
 		$("#close_lightbox").click(function(event) {
+			event.preventDefault();
 			$("#lightbox_wrapper").remove();
 			currentForm.hide();
 		});
