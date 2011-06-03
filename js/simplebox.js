@@ -8,7 +8,11 @@
 		currentForm = $(this), 
 		windowWidth = $(document).width(), 
 		windowHeight = $(document).height(), 
-		closeButton = document.createElement("a");
+		closeButton = document.createElement("a"), 
+		closeSimpleBox = function() {
+			$("#lightbox_wrapper, #close_lightbox").remove();
+			currentForm.hide();
+		};
 		
 		/* 
 		 * Adding ie6 and ie7 classes for CSS style fixes. Cannot be sure that the user is already 
@@ -57,16 +61,16 @@
 		currentForm.show();
 		
 		/*
-		 * IE, below version 9, does not support RGBA nor HSLA so opacity needs to be done via JavaScript.
+		 * IE, below version 9, does not support RGBA nor HSLA so opacity needs to be done via JavaScript 
+		 * using a IE specific filter.
 		 */
 		if($.support.changeBubbles === false) {			
 			$("#lightbox_wrapper").css("background-color", "#333333").fadeTo('fast', 0.5);
 		}
 		
 		$("#close_lightbox").click(function(event) {
-			event.preventDefault();
-			$("#lightbox_wrapper, #close_lightbox").remove();
-			currentForm.hide();
+			event.preventDefault();			
+			closeSimpleBox();
 		});
 	};
 })(jQuery);
