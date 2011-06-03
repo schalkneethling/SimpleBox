@@ -42,7 +42,8 @@
 		
 		$(closeButton).attr({
 			"id" : "close_lightbox", 
-			"title" : "Close dialog"
+			"title" : "Close dialog", 
+			"accesskey" : "c"
 		});
 		
 		$(closeButton).append("close dialog");
