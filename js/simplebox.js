@@ -64,7 +64,7 @@
 		
 		$("#close_lightbox").click(function(event) {
 			event.preventDefault();
-			$("#lightbox_wrapper").remove();
+			$("#lightbox_wrapper, #close_lightbox").remove();
 			currentForm.hide();
 		});
 	};
