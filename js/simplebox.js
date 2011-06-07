@@ -8,11 +8,7 @@
 		currentForm = $(this), 
 		windowWidth = $(document).width(), 
 		windowHeight = $(document).height(), 
-		closeButton = document.createElement("a"), 
-		closeSimpleBox = function() {
-			$("#lightbox_wrapper, #close_lightbox").remove();
-			currentForm.hide();
-		};
+		closeButton = document.createElement("a");
 		
 		/* 
 		 * Adding ie6 and ie7 classes for CSS style fixes. Cannot be sure that the user is already 
@@ -70,7 +66,16 @@
 		
 		$("#close_lightbox").click(function(event) {
 			event.preventDefault();			
-			closeSimpleBox();
+			simplebox.closeSimpleBox(currentForm);
 		});
 	};
+	
+	/*
+	 * Convenience function for users using the plugin to close the box from an external call. 
+	 */
+	simplebox.closeSimpleBox = function(currentForm) {
+		$("#lightbox_wrapper, #close_lightbox").remove();
+		currentForm.hide();
+	};
+	
 })(jQuery);
