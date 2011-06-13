@@ -33,7 +33,7 @@
 			
 			<h2>Usage</h2>
 			<p>To kick of SimpleBox, all you need is $("#containerid").simplebox();</p>
-			<p>Using SimpleBox as a confirmation dialog and want to close it on an action? Simply call, ("#containerid").closeSimpleBox();</p>
+			<p>Using SimpleBox as a confirmation dialog and want to close it on an action? Simply call, ("#containerid").simplebox('hide');</p>
 			
 			<h2>Give Me The Code Already</h2>
 			<p>You can <a href="https://github.com/ossreleasefeed/SimpleBox">grab the code, fork me and contribute directly on Github.</a>.</p>
@@ -102,7 +102,7 @@
         		
         		$("#close_dialog").click(function() {
         			event.preventDefault();
-        			$("#dialog").closeSimpleBox();
+        			$("#dialog").simplebox('hide');
         		});
         	});
         </script>
