@@ -82,14 +82,14 @@
 	
 			$("#close_simplebox").click(function(event) {
 				event.preventDefault();			
-				$("#" + boxContent.attr("id")).simplebox('hide');
+				$("#" + boxContent.attr("id")).simplebox('close');
 			});
 			
 			$(wrapper).click(function(event) {
-				$("#" + boxContent.attr("id")).simplebox('hide');
+				$("#" + boxContent.attr("id")).simplebox('close');
 			})
 		}, 
-		hide: function() {
+		close: function() {
 			$("#simplebox_wrapper, #close_simplebox").remove();
 			$(this).hide();
 		}
