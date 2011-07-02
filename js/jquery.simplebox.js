@@ -19,7 +19,7 @@
 			
 	
 			/* 
-			 * Adding ie6 and ie7 classes for CSS style fixes. Cannot be sure that the user is already 
+			 * Adding ie7 classes for CSS style fixes. Cannot be sure that the user is already 
 			 * doing this so, this is simply to ensure compatibility.
 			 * 
 			 * Have to use browser version detection here as the fix is just for IE7 and below.
@@ -27,7 +27,7 @@
 			 * but, then the browser needs to be in QuirksMode.
 			 */
 			if(jQuery.browser.version === "7.0") {
-				$("html").addClass("ie6 ie7");
+				$("html").addClass("ie7");
 			}
 	
 			$(wrapper).attr({
