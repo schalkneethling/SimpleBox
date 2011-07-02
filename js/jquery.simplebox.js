@@ -9,7 +9,7 @@
 		show: function(options) {
 			var wrapper = document.createElement("div"),
 			closeButton = document.createElement("a"), 
-			boxContent = $(this), 
+			boxContent = this, 
 			windowWidth = $(document).width(), 
 			windowHeight = $(document).height(), 		
 			boxContentWidth = boxContent.width(), 
@@ -91,7 +91,7 @@
 		}, 
 		close: function() {
 			$("#simplebox_wrapper, #close_simplebox").remove();
-			$(this).hide();
+			this.hide();
 		}
 	};
 	
