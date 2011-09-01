@@ -5,7 +5,7 @@ def outputDir = 'target'
 def jshintConfig = 'jshint.json'
 def jshintOutput = outputDir + '/jshint.xml'
 def testDir = 'test'
-def minifiedFilePath = "../${outputDir}/stacktrace-min.js"
+def minifiedFilePath = "../${outputDir}/jquery.simpebox-min.js"
 
 repositories {
 	mavenRepo urls: 'http://repository.springsource.com/maven/bundles/release'
@@ -40,7 +40,7 @@ task minify << {
 
 		jscomp(compilationLevel: 'simple', warning: 'quiet', debug: 'false', output: minifiedFilePath) {
 			sources(dir: srcDir) {
-				file(name: 'stacktrace.js'){}
+				file(name: 'js/jquery.simplebox.js'){}
 			}
 		}
 	}
@@ -53,8 +53,8 @@ task zip << {
 }
 
 task jshint(dependsOn: 'init') << {
-	description = 'runs jshint on stacktrace JS file'
-	def command = "jshint ${new File('stacktrace.js').canonicalPath} --config ${jshintConfig} --jslint-reporter"
+	description = 'runs jshint on SimpleBox JS file'
+	def command = "jshint ${new File('js/jquery.simplebox.js').canonicalPath} --config ${jshintConfig} --jslint-reporter"
 	println command
 	new File(jshintOutput).write(command.execute().text)
 }
