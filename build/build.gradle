@@ -1,0 +1,103 @@
+defaultTasks 'all'
+
+def srcDir = '..'
+def outputDir = 'target'
+def jshintConfig = 'jshint.json'
+def jshintOutput = outputDir + '/jshint.xml'
+def testDir = 'test'
+def minifiedFilePath = "../${outputDir}/stacktrace-min.js"
+
+repositories {
+	mavenRepo urls: 'http://repository.springsource.com/maven/bundles/release'
+	mavenCentral()
+}
+
+configurations {
+	js
+}
+
+dependencies {
+	js 'com.google.javascript:closure-compiler:r+'
+}
+
+task clean << {
+	description = 'Cleans old artifacts'
+	ant.delete(dir: outputDir)
+	ant.delete(file: jshintOutput)
+}
+
+task init(dependsOn: 'clean') << {
+	description = 'Creates artifact output directories'
+	(new File(outputDir)).mkdirs()
+}
+
+task minify << {
+	description = 'minify JS file' 
+	project.ant {
+		ant.taskdef(name: 'jscomp', 
+				classname: 'com.google.javascript.jscomp.ant.CompileTask',
+				classpath: configurations.js.asPath)
+
+		jscomp(compilationLevel: 'simple', warning: 'quiet', debug: 'false', output: minifiedFilePath) {
+			sources(dir: srcDir) {
+				file(name: 'stacktrace.js'){}
+			}
+		}
+	}
+}
+
+task zip << {
+	description = 'GZip file for distribution'
+	ant.gzip(src: minifiedFilePath, destfile: "${minifiedFilePath}.gz")
+	ant.move(file: "${minifiedFilePath}.gz", tofile: minifiedFilePath)
+}
+
+task jshint(dependsOn: 'init') << {
+	description = 'runs jshint on stacktrace JS file'
+	def command = "jshint ${new File('stacktrace.js').canonicalPath} --config ${jshintConfig} --jslint-reporter"
+	println command
+	new File(jshintOutput).write(command.execute().text)
+}
+
+task test(dependsOn: 'init') << {
+	description = 'run QUnit tests and create JUnit test reports'
+	
+	def specs = []
+	new File(testDir).eachFile {
+		if (it.name.endsWith('.html')) {
+			specs << it
+		}
+	}
+	
+	def startTime = new Date().time
+	def numFailures = 0
+	def testsFailed = false
+	specs.each { File spec ->
+		println "Running ${spec.name}..."
+		
+		def outputFile = "${outputDir}/TEST-${spec.name.replace('-', '').replace('.html', '.xml')}"
+		ant.exec(outputproperty: 'cmdOut', errorproperty: 'cmdErr',
+				resultproperty: 'exitCode', failonerror: 'false', executable: '/usr/bin/env') {
+			arg(value: 'DISPLAY=:1')
+			arg(value: '/usr/local/bin/phantomjs')
+			arg(value: '../test/phantomjs-qunit-runner.js')
+			arg(value: "${spec.canonicalPath}")
+		}
+		// Check exit code
+		if (ant.project.properties.exitCode != '0') {
+			testsFailed = true
+			numFailures++
+			println '\tFAILED'
+		} else {
+			println '\tPASSED'
+		}
+
+		new File(outputFile).write(ant.project.properties.cmdOut)
+	}
+	
+	println "QUnit tests completed in ${new Date().time - startTime}ms"
+	println "QUnit Tests ${testsFailed ? 'FAILED' : 'PASSED'} - view reports in ${outputDir}"
+	ant.fail(if: testsFailed, message: 'JS Tests Failed')
+}
+
+task all(dependsOn: ['clean', 'minify', 'zip', 'jshint', 'test']) << {}
